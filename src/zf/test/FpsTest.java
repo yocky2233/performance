@@ -50,19 +50,26 @@ public class FpsTest {
 				float b2 = 0;
 				for(int ii=0; ii<d.length; ii++) {
 					b2 +=  Float.parseFloat(d[ii].trim());
-					sum += b2;
 				}
-				if(b2 > 16) {
+				//时间小于16ms的视为16ms
+				if(b2 < 16) {
+					b2 = (float) 16.67;
+				}
+				sum += b2;
+				if(b2 > 16.7) {
+					System.out.println(b2);
 					framesDropped++;
 				}
 			}	
-			int sumTime = b1.length;
+			int sumTime = b1.length-1;
 			float A = sum/sumTime;
 			float pctFramesDropped = (float)framesDropped/sumTime*100;
 			String pct = new DecimalFormat("0.00").format(pctFramesDropped); 
 			String AVG = new DecimalFormat("0.00").format(A);
+			String fps = new DecimalFormat("0.00").format(1000/A);
 			System.out.println("总帧数："+sumTime);
 			System.out.println("每帧平均完成时间："+AVG+"ms");
+			System.out.println("平均帧率："+fps+"fps");
 			System.out.println("掉帧数："+framesDropped);
 			System.out.println("掉帧率："+pct+"%");
 			
