@@ -66,12 +66,12 @@ public class StartAppHtml {
 		}
 		FileOutputStream out = new FileOutputStream(file);
 		StringBuffer sb = new StringBuffer();
-		sb.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-		sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-		sb.append("<head>");
-		sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
-		sb.append("<title>App性能测试</title>");
-		sb.append("<style type=\"text/css\">");
+		sb.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"+"\n");
+		sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">"+"\n");
+		sb.append("<head>"+"\n");
+		sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"+"\n");
+		sb.append("<title>App性能测试</title>"+"\n");
+		sb.append("<style type=\"text/css\">"+"\n");
 		sb.append("<!-- "
 				+ "/* ---- Body ---- */ "
 				+ "body {margin:0;padding:20px; font:13px;} "
@@ -85,25 +85,25 @@ public class StartAppHtml {
 				+ "tbody td,tfoot td {text-align:center;background:#d5eaf0;} "
 				+ "tfoot th {background:#b0cc7f;} "
 				+ "tfoot td {background:#d7e1c5;font-weight:bold;} "
-				+ "tbody tr.odd td { background:#bcd9e1;} " + "-->");
-		sb.append("</style>");
-		sb.append("</head>");
-		sb.append("<body>");
-		sb.append("<table id=\"travel\" summary=\"\">");
-		sb.append("<thead>");
-		sb.append("<tr>");
-		sb.append("<th scope=\"col\" rowspan=\"2\">模块</th>");
-		sb.append("<th scope=\"col\" colspan=\"10\">启动耗时（ms）</th>");
-		sb.append("</tr>");
-		sb.append("<tr>");
-		sb.append("<th scope=\"col\">启动方式</th>");
-		sb.append("<th scope=\"col\">测试次数</th>");
-		sb.append("<th scope=\"col\">平均值</th>");
-		sb.append("<th scope=\"col\">最小值</th>");
-		sb.append("<th scope=\"col\">最大值</th>");
-		sb.append("</tr>");
-		sb.append("</thead>");
-		sb.append("<tbody>");
+				+ "tbody tr.odd td { background:#bcd9e1;} " + "-->"+"\n");
+		sb.append("</style>"+"\n");
+		sb.append("</head>"+"\n");
+		sb.append("<body>"+"\n");
+		sb.append("<table id=\"travel\" summary=\"\">"+"\n");
+		sb.append("<thead>"+"\n");
+		sb.append("<tr>"+"\n");
+		sb.append("<th scope=\"col\" rowspan=\"2\">模块</th>"+"\n");
+		sb.append("<th scope=\"col\" colspan=\"10\">启动耗时（ms）</th>"+"\n");
+		sb.append("</tr>"+"\n");
+		sb.append("<tr>"+"\n");
+		sb.append("<th scope=\"col\">启动方式</th>"+"\n");
+		sb.append("<th scope=\"col\">测试次数</th>"+"\n");
+		sb.append("<th scope=\"col\">平均值</th>"+"\n");
+		sb.append("<th scope=\"col\">最小值</th>"+"\n");
+		sb.append("<th scope=\"col\">最大值</th>"+"\n");
+		sb.append("</tr>"+"\n");
+		sb.append("</thead>"+"\n");
+		sb.append("<tbody>"+"\n");
 		
 		for (int ii = 1; ii < 3; ii++) {
 			if(ii == 1){
@@ -133,22 +133,22 @@ public class StartAppHtml {
 			System.out.println("第"+ii+"次启动"+"\n" + Arrays.deepToString(BB));
 	
 		    for (int i = 0; i < BB.length; i++) {
-				sb.append("<tr>");
-				sb.append("<th scope=\"row\">" + BB[i][0][1] + "</th>");
-				sb.append("<td>" + "第" + ii + "次启动" + "</td>");
-				sb.append("<td>" + R + "</td>");
-				sb.append("<td>" + BB[i][3][1] + "</td>");
-				sb.append("<td>" + BB[i][2][1] + "</td>");
-				sb.append("<td>" + BB[i][1][1] + "</td>");
+				sb.append("<tr>"+"\n");
+				sb.append("<th scope=\"row\">" + BB[i][0][1] + "</th>"+"\n");
+				sb.append("<td>" + "第" + ii + "次启动" + "</td>"+"\n");
+				sb.append("<td>" + R + "</td>"+"\n");
+				sb.append("<td>" + BB[i][3][1] + "</td>"+"\n");
+				sb.append("<td>" + BB[i][2][1] + "</td>"+"\n");
+				sb.append("<td>" + BB[i][1][1] + "</td>"+"\n");
 				
-				sb.append("</tr>");
+				sb.append("</tr>"+"\n");
 			}
 
 		}
-		sb.append("</tbody>");
-		sb.append("</table>");
-		sb.append("</body>");
-		sb.append("</html>");
+		sb.append("</tbody>"+"\n");
+		sb.append("</table>"+"\n");
+		sb.append("</body>"+"\n");
+		sb.append("</html>"+"\n");
 		out.write(sb.toString().getBytes("utf-8"));
 		out.close();
 	}
