@@ -86,6 +86,7 @@ public class StartAppHtml {
 				+ "tfoot th {background:#b0cc7f;} "
 				+ "tfoot td {background:#d7e1c5;font-weight:bold;} "
 				+ "tbody tr.odd td { background:#bcd9e1;} " + "-->"+"\n");
+		
 		sb.append("</style>"+"\n");
 		sb.append("</head>"+"\n");
 		sb.append("<body>"+"\n");
@@ -137,10 +138,10 @@ public class StartAppHtml {
 				sb.append("<th scope=\"row\">" + BB[i][0][1] + "</th>"+"\n");
 				sb.append("<td>" + "µÚ" + ii + "´ÎÆô¶¯" + "</td>"+"\n");
 				sb.append("<td>" + R + "</td>"+"\n");
-				sb.append("<td>" + BB[i][3][1] + "</td>"+"\n");
+				sb.append("<td class=\"red\">"+ BB[i][3][1] + "</td>"+"\n");
+//				sb.append("<td>" + BB[i][3][1] + "</td>"+"\n");
 				sb.append("<td>" + BB[i][2][1] + "</td>"+"\n");
 				sb.append("<td>" + BB[i][1][1] + "</td>"+"\n");
-				
 				sb.append("</tr>"+"\n");
 			}
 
