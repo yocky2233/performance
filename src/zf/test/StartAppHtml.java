@@ -115,7 +115,7 @@ public class StartAppHtml {
 
 			StartAppHtml sa3 = new StartAppHtml();
 			String[][] activity = {
-					{ "com.android.music", "com.android.auroramusic.ui.AuroraMediaPlayHome" }};//,
+					{ "com.android.music", "com.android.auroramusic.ui.AuroraMediaPlayHome" }};
 //					{ "com.android.gallery3d", ".app.Gallery" },
 //					{ "com.android.music",
 //							"com.android.auroramusic.ui.AuroraMediaPlayHome" } };
