@@ -139,7 +139,6 @@ public class StartAppHtml {
 				sb.append("<td>" + "第" + ii + "次启动" + "</td>"+"\n");
 				sb.append("<td>" + R + "</td>"+"\n");
 				sb.append("<td><font size=\"3\" color=\"red\">"+ BB[i][3][1] +"</font></td>");	//改变列表中字体大小和颜色
-//				sb.append("<td>" + BB[i][3][1] + "</td>"+"\n");
 				sb.append("<td>" + BB[i][2][1] + "</td>"+"\n");
 				sb.append("<td>" + BB[i][1][1] + "</td>"+"\n");
 				sb.append("</tr>"+"\n");
