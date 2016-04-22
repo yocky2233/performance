@@ -140,7 +140,6 @@ public class FpsTest {
 		}
 		for(int i=0; i<300; i++) {
 			try {
-//				System.out.println(getFtp(getPackage()));
 				int fps = getFtp(getPackage());
 				fw.write(String.valueOf(fps)+"\n");
 				fw.flush(); 
