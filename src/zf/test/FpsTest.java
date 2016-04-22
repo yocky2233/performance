@@ -70,7 +70,6 @@ public class FpsTest {
 					}else {
 						vsync_overtime = (int) (b2%16.67)+vsync_overtime;
 					}
-//					System.out.println(b2);
 					framesDropped++;
 				}
 			}	
