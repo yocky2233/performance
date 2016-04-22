@@ -76,7 +76,6 @@ public class FpsTest {
 			}	
 			
 			int sumTime = b1.length-1;
-//			System.out.println("µôÖ¡Êý£º"+vsync_overtime);
 			fps2 = sumTime * 60 / (sumTime + vsync_overtime);
 			float A = sum/sumTime;
 			float pctFramesDropped = (float)framesDropped/sumTime*100;
