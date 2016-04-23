@@ -138,7 +138,7 @@ public class FpsTest {
 		}
 		for(int i=0; i<300; i++) {
 			try {
-				int fps = getFtp(getPackage());
+				int fps = getFtp(Package);
 				fw.write(String.valueOf(fps)+"\n");
 				fw.flush(); 
 				if(fps<60) {
@@ -155,7 +155,7 @@ public class FpsTest {
 				System.out.println("Ö¡ÂÊ£º0fps");
 			}
 			try {
-				Thread.sleep(300);
+				Thread.sleep(800);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
