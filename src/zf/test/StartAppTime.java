@@ -117,10 +117,7 @@ public class StartAppTime {
 
 			StartAppTime sa3 = new StartAppTime();
 			String[][] activity = {
-					{ "com.aurora.secure", "com.secure.activity.MainActivity","应用管理"},
-					{ "com.android.gallery3d", ".app.Gallery","相册"},
-					{ "com.android.music","com.android.auroramusic.ui.AuroraMediaPlayHome","音乐" },
-					{"com.aurora.weatherforecast",".AuroraWeatherMain","天气"}};
+					{ "kingbu.com.suini", ".uimain.MainTabActivity","WIFI"}};
 			String[][][] BB = new String[activity.length][4][2];
 			for (int i = 0; i < activity.length; i++) {
 				sa3.GetFirstTime(start,activity[i][0], activity[i][1]);

@@ -32,9 +32,9 @@ public class FpsTest {
 			int number = 0;
 			while((b=in.readLine())!=null){
 				if(b.contains("Process	Execute")){
-					if(number>0 && a.length()<500) { //<500为了避免把取到的值也给删除
-						a.delete(0, a.length());
-					}
+//					if(number>0 && a.length()<500) { //<500为了避免把取到的值也给删除
+//						a.delete(0, a.length());
+//					}
 					aa = true;
 					number += 1;
 				}
@@ -55,20 +55,22 @@ public class FpsTest {
 			for(int i1=1;i1<b1.length;i1++) {				
 				String c = b1[i1].trim();
 				String[] d = c.split("	");
-				float b2 = 0;
+				double b2 = 0;
 				for(int ii=0; ii<d.length; ii++) {
 					b2 +=  Float.parseFloat(d[ii].trim());
 				}
+				
 				//时间小于16ms的视为16ms
 				if(b2 < 16.67) {
-					b2 = (float) 16.67;
+					b2 = 16.67;
 				}
 				sum += b2;
 				if(b2 > 16.67) {
 					if(b2%16.67 == 0) {
-						vsync_overtime = (int) (b2%16.67 - 1)+vsync_overtime;
+						vsync_overtime = (int) (b2/16.67 - 1)+vsync_overtime;
 					}else {
-						vsync_overtime = (int) (b2%16.67)+vsync_overtime;
+						double dz = b2/16.67;
+						vsync_overtime = (int)dz+vsync_overtime;
 					}
 					framesDropped++;
 				}
@@ -77,16 +79,17 @@ public class FpsTest {
 			int sumTime = b1.length-1;
 			fps2 = sumTime * 60 / (sumTime + vsync_overtime);
 			float A = sum/sumTime;
-			float pctFramesDropped = (float)framesDropped/sumTime*100;
+			float pctFramesDropped = (float)vsync_overtime/(sumTime + vsync_overtime)*100;
 			String pct = new DecimalFormat("0.00").format(pctFramesDropped); 
 			String AVG = new DecimalFormat("0.00").format(A);
 			String fps = new DecimalFormat("0.00").format(1000/A);
-//			System.out.println("总帧数："+sumTime);
+			System.out.println("总帧数："+sumTime);
 //			System.out.println("每帧平均完成时间："+AVG+"ms");
 //			System.out.println("旧帧率："+fps+"fps");
 			System.out.println("帧率："+fps2+"fps");
-//			System.out.println("掉帧数："+framesDropped);
-//			System.out.println("掉帧率："+pct+"%");
+			System.out.println("掉帧数："+framesDropped);
+			System.out.println("垂直同步掉帧数："+vsync_overtime);
+			System.out.println("掉帧率："+pct+"%");
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -121,6 +124,7 @@ public class FpsTest {
 	
 	
 	public static void main(String[] args) throws IOException {
+//		String Package = "com.android.systemui";
 		String Package = "";
 		FileWriter fw = null;
 		File f = new File("d:/fps.csv");
@@ -136,29 +140,29 @@ public class FpsTest {
 			Package = getPackage();
 			System.out.println("当前应用包名："+getPackage());
 		}
-		for(int i=0; i<300; i++) {
+		for(int i=0; i<1; i++) {
 			try {
 				int fps = getFtp(Package);
-				fw.write(String.valueOf(fps)+"\n");
-				fw.flush(); 
+//				fw.write(String.valueOf(fps)+"\n");
+//				fw.flush(); 
 				if(fps<60) {
 					Runtime.getRuntime().exec("cmd /c adb shell screencap -p /sdcard/"+i+".png");
 				}
 			}catch(Exception e) {
 //				e.printStackTrace();
-				try {
-					fw.write("0"+"\n");
-					fw.flush();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+//				try {
+//					fw.write("0"+"\n");
+//					fw.flush();
+//				} catch (IOException e1) {
+//					e1.printStackTrace();
+//				}
 				System.out.println("帧率：0fps");
 			}
-			try {
-				Thread.sleep(800);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				Thread.sleep(1000);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
 		}
 		fw.close();
 	}
