@@ -59,8 +59,8 @@ public class FpsTest {
 			
 			Pattern pt = Pattern.compile("\\d+\\.\\d+\\s+\\d+\\.\\d+.*\\d+\\.\\d+/n/n");
 	        Matcher m = pt.matcher(a);//正则过滤
-	        while(m.find()) {    //find() 是开始寻找。如果没有找的过程，就没有匹配的结果
-	            System.out.println("过滤的值："+m.group());   //group() 是取出表达式所匹配到的完整的字符串。
+	        while(m.find()) {    
+	            System.out.println("过滤的值："+m.group());  
 	            b = m.group();
 	        }
 
