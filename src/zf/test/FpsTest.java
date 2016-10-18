@@ -50,7 +50,6 @@ public class FpsTest {
 					aa = false;
 				}
 				if(aa){
-//					System.out.println(b);
 					a.append(b+"/n");
 				}
 			}
