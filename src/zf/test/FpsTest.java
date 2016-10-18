@@ -37,7 +37,7 @@ public class FpsTest {
 			while((b=in.readLine())!=null){
 //				System.out.println(b);
 				
-				if(b.contains("activity")){
+				if(b.contains(activity)){
 //					if(number>0 && a.length()<500) { //<500为了避免把取到的值也给删除
 //						a.delete(0, a.length());
 //					}
