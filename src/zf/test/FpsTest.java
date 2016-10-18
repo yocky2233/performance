@@ -12,9 +12,13 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FpsTest {
 
+	static String activity;
+	
 	/**
 	 * 使用脚本前请先在手机开发者模式中开启GPU呈现模式
 	 * @param args
@@ -31,10 +35,14 @@ public class FpsTest {
 			int i = 0;
 			int number = 0;
 			while((b=in.readLine())!=null){
-				if(b.contains("Process	Execute")){
+//				System.out.println(b);
+				
+				if(b.contains("activity")){
 //					if(number>0 && a.length()<500) { //<500为了避免把取到的值也给删除
 //						a.delete(0, a.length());
 //					}
+					
+					System.out.println("包含Process	Execute");
 					aa = true;
 					number += 1;
 				}
@@ -42,23 +50,40 @@ public class FpsTest {
 					aa = false;
 				}
 				if(aa){
+//					System.out.println(b);
 					a.append(b+"/n");
 				}
 			}
+			
+			System.out.println(a);
+			
+			Pattern pt = Pattern.compile("\\d+\\.\\d+\\s+\\d+\\.\\d+.*\\d+\\.\\d+/n/n");
+	        Matcher m = pt.matcher(a);//正则过滤
+	        while(m.find()) {    //find() 是开始寻找。如果没有找的过程，就没有匹配的结果
+	            System.out.println("过滤的值："+m.group());   //group() 是取出表达式所匹配到的完整的字符串。
+	            b = m.group();
+	        }
 
-			b = a.substring(a.indexOf("Execute"),a.indexOf("/n/n/n/n"));
+//			b = a.substring(a.indexOf("Execute"),a.indexOf("/n/n/n/n"));
             String[] b1 = b.split("/n/n");
-//            System.out.println(Arrays.toString(b1));
+            System.out.println(Arrays.toString(b1));
             float sum = 0;
             int framesDropped = 0;
             int vsync_overtime = 0;
-			for(int i1=1;i1<b1.length;i1++) {				
+			for(int i1=0;i1<b1.length;i1++) {	
+//				System.out.println(b1[i1]);
 				String c = b1[i1].trim();
 				String[] d = c.split("	");
+				System.out.println(Arrays.toString(d));
 				double b2 = 0;
-				for(int ii=0; ii<d.length; ii++) {
-					b2 +=  Float.parseFloat(d[ii].trim());
+				
+				if(d.length >= 3) {
+					for(int ii=0; ii<d.length; ii++) {
+						b2 +=  Float.parseFloat(d[ii].trim());
+					}
 				}
+				
+				System.out.println("帧率时间："+b2);
 				
 				//时间小于16ms的视为16ms
 				if(b2 < 16.67) {
@@ -66,6 +91,7 @@ public class FpsTest {
 				}
 				sum += b2;
 				if(b2 > 16.67) {
+					System.out.println("掉帧时间："+b2);
 					if(b2%16.67 == 0) {
 						vsync_overtime = (int) (b2/16.67 - 1)+vsync_overtime;
 					}else {
@@ -112,6 +138,10 @@ public class FpsTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		String at = out.substring(out.indexOf("Y")+1,out.indexOf("pid")).trim();
+		activity = at.split(" ")[0].trim();
+		System.out.println(activity);
 		String sub = out.substring(out.indexOf("Y")+1,out.indexOf("/"));
 		return sub;
 	}
@@ -123,12 +153,16 @@ public class FpsTest {
 	}
 	
 	
-	public static void main(String[] args) throws IOException {
+	public void test() throws IOException {
 //		String Package = "com.android.systemui";
 		String Package = "";
 		FileWriter fw = null;
 		File f = new File("d:/fps.csv");
-		fw = new FileWriter("d:/fps.csv");
+		try {
+			fw = new FileWriter("d:/fps.csv");
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		}
 		if(!f.exists()) {
 			f.createNewFile();
 		}else {
@@ -143,19 +177,16 @@ public class FpsTest {
 		for(int i=0; i<1; i++) {
 			try {
 				int fps = getFtp(Package);
-//				fw.write(String.valueOf(fps)+"\n");
-//				fw.flush(); 
-				if(fps<60) {
-					Runtime.getRuntime().exec("cmd /c adb shell screencap -p /sdcard/"+i+".png");
-				}
+				fw.write(String.valueOf(fps)+"\n");
+				fw.flush(); 
 			}catch(Exception e) {
-//				e.printStackTrace();
-//				try {
-//					fw.write("0"+"\n");
-//					fw.flush();
-//				} catch (IOException e1) {
-//					e1.printStackTrace();
-//				}
+				e.printStackTrace();
+				try {
+					fw.write("0"+"\n");
+					fw.flush();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 				System.out.println("帧率：0fps");
 			}
 //			try {
@@ -165,5 +196,17 @@ public class FpsTest {
 //			}
 		}
 		fw.close();
+	}
+	
+	
+	public static void main(String[] args)  {
+		FpsTest t = new FpsTest();
+		try {
+			t.test();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+//		getPackage();
+		
 	}
 }
