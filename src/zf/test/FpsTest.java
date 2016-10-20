@@ -189,14 +189,14 @@ public class FpsTest {
 			System.out.println("当前应用包名："+Package);
 		}
 		
-		Runtime.getRuntime().exec("adb shell dumpsys gfxinfo "+Package);//先清除一下数据
+//		Runtime.getRuntime().exec("adb shell dumpsys gfxinfo "+Package);//先清除一下数据
 		for(int i=1; i<times; i++) {
 			System.out.println("第"+i+"次取值");
 			try {
 				int fps = getFtp(Package); //获取帧率
 				fw.write(String.valueOf(fps)+"\n");
 				fw.flush(); 
-				Thread.sleep(2000);
+				Thread.sleep(1500);
 			}catch(Exception e) {
 				e.printStackTrace();
 				try {
@@ -261,7 +261,7 @@ public class FpsTest {
 		}
 		
 		try {
-			
+			String sleep = "300";
 			FileWriter fw = new FileWriter("d:/monekyFile");
 			fw.write("type = user");
 			fw.write("\n");
@@ -271,11 +271,19 @@ public class FpsTest {
 			fw.write("\n");
 			fw.write("start data >>");
 			fw.write("\n");
-			fw.write("UserWait(600)");
+			fw.write("UserWait("+sleep+")");
 			fw.write("\n");
 			fw.write("Drag("+startX+","+startY+","+stopX+","+stopY+","+BS+")");
 			fw.write("\n");
-			fw.write("UserWait(600)");
+			fw.write("UserWait("+sleep+")");
+			fw.write("\n");
+			fw.write("Drag("+stopX+","+stopY+","+startX+","+startY+","+BS+")");
+			fw.write("\n");
+			fw.write("UserWait("+sleep+")");
+			fw.write("\n");
+			fw.write("Drag("+startX+","+startY+","+stopX+","+stopY+","+BS+")");
+			fw.write("\n");
+			fw.write("UserWait("+sleep+")");
 			fw.write("\n");
 			fw.write("Drag("+stopX+","+stopY+","+startX+","+startY+","+BS+")");
 			fw.flush();
@@ -354,7 +362,7 @@ public class FpsTest {
 		}
 	
 	
-	public static void main(String[] args) throws InterruptedException  {
+	public void runTest() throws InterruptedException  {
 		FpsTest t = new FpsTest();
 		t.create("h");
 		
@@ -373,7 +381,7 @@ public class FpsTest {
 		
 		Process run = null;
 		try {
-			run = Runtime.getRuntime().exec("adb shell monkey -v -f /mnt/sdcard/monekyFile 50");
+			run = Runtime.getRuntime().exec("adb shell monkey -v -f /mnt/sdcard/monekyFile 99999999");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -386,7 +394,39 @@ public class FpsTest {
 			e1.printStackTrace();
 		}
 		
+		Thread.sleep(2000);
 		t.killMonkey();
 		System.out.println("测试结束……");
 	}
+	
+	public void aloneRun() {
+		String Package = "";
+		if(!Package.equals(getPackage())) {
+			Package = getPackage();
+			System.out.println("当前应用包名："+Package);
+		}
+		
+			try {
+				int fps = getFtp(Package); //获取帧率
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("帧率：0fps");
+			}
+		
+	}
+	
+	public static void main(String[] args) {
+		FpsTest t = new FpsTest();
+		try {
+			t.runTest();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+//		t.aloneRun();
+		
+	}
+	
+	
+	
 }
