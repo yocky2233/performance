@@ -27,19 +27,24 @@ public class GetPowerConsumption {
 	
 	//获取功耗值
 	public void getPowerConsumption(String Package) {
+		String haoDian = null;
 		String uid = getUid(Package);
 		StringBuffer PowerConsumption = cmd("adb shell dumpsys batterystats "+Package+" | grep  "+uid);
 		Pattern p = Pattern.compile(".+:.*\\d+.\\d+");
 		Matcher m = p.matcher(PowerConsumption);
 		while(m.find()) {
 			String gh = m.group();
-			String haoDian = gh.split(":")[1].trim();
-			System.out.println("功耗为："+haoDian+"mAh");
+			haoDian = gh.split(":")[1].trim();
+			System.out.println(Package+"功耗为："+haoDian+"mAh");
 		}
 		
 		//重置数据
 		try {
-			Runtime.getRuntime().exec("adb shell dumpsys batterystats --reset");
+			if(!haoDian.isEmpty()) {
+				System.out.println("清除数据");
+				Runtime.getRuntime().exec("adb shell dumpsys batterystats --reset");
+			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -70,8 +75,8 @@ public class GetPowerConsumption {
 	
 	public static void main(String[] args) {
 		GetPowerConsumption t = new GetPowerConsumption();
-//		t.getUid("com.meitu.shanliao");
-		t.getPowerConsumption("com.meitu.shanliao");
+//		t.getPowerConsumption("com.meitu.shanliao");
+		t.getPowerConsumption("com.tencent.mm");
 	}
 
 }
