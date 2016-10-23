@@ -72,7 +72,6 @@ public class GetPowerConsumption {
 		GetPowerConsumption t = new GetPowerConsumption();
 //		t.getUid("com.meitu.shanliao");
 		t.getPowerConsumption("com.meitu.shanliao");
-//		t.cmd("adb devices");
 	}
 
 }
