@@ -249,8 +249,8 @@ public class FpsTest {
 			BS = new DecimalFormat("0").format(BSH);
 		}else {
 			double VX = 0.5;
-			double startVY = 0.7;
-			double stopVY = 0.3;
+			double startVY = 0.8;
+			double stopVY = 0.2;
 			
 			startX = stopX = new DecimalFormat("0").format(VX*x);
 			startY = new DecimalFormat("0").format(startVY*y);
@@ -261,7 +261,7 @@ public class FpsTest {
 		}
 		
 		try {
-			String sleep = "300";
+			String sleep = "500";
 			FileWriter fw = new FileWriter("d:/monekyFile");
 			fw.write("type = user");
 			fw.write("\n");

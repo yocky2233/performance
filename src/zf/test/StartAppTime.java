@@ -1,5 +1,4 @@
 package zf.test;
-//package test;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -37,6 +36,8 @@ public class StartAppTime {
 			try {
 				Process proc = runtime.exec(COMMAND + packageName + "/"
 						+ activity + " " + FILTER);
+				System.out.println(COMMAND + packageName + "/"
+						+ activity + " " + FILTER);
 				proc.waitFor();
 				BufferedReader in = new BufferedReader(new InputStreamReader(
 						proc.getInputStream()));
@@ -54,6 +55,7 @@ public class StartAppTime {
 				sumTime += arrayTime[i];
 				Thread.sleep(1000);
 				runtime.exec("adb shell input keyevent 4");
+				System.out.println("点击返回");
 				Thread.sleep(1000);
 			} catch (IOException | InterruptedException e) {
 				e.printStackTrace();
@@ -70,7 +72,7 @@ public class StartAppTime {
 	public static void main(String[] args) throws IOException {
 		try {
             // 创建文件
-            WritableWorkbook book = Workbook.createWorkbook(new File("f:\\aaa.xls"));
+            WritableWorkbook book = Workbook.createWorkbook(new File("d:\\AppStartTime.xls"));
             WritableCellFormat titleFormate = new WritableCellFormat();
             titleFormate.setAlignment(jxl.format.Alignment.CENTRE);
             titleFormate.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE);
@@ -110,14 +112,16 @@ public class StartAppTime {
 			if(ii == 1){
 				x = 1;
 				start = COMMAND1;
+				System.err.println("第一次启动");
 			}else{
 				x = 7;
 				start = COMMAND2;
+				System.err.println("第二次启动");
 			}
 
 			StartAppTime sa3 = new StartAppTime();
 			String[][] activity = {
-					{ "kingbu.com.suini", ".uimain.MainTabActivity","WIFI"}};
+					{ "com.meitu.shanliao", ".app.startup.activity.SplashActivity","闪聊"}};
 			String[][][] BB = new String[activity.length][4][2];
 			for (int i = 0; i < activity.length; i++) {
 				sa3.GetFirstTime(start,activity[i][0], activity[i][1]);
