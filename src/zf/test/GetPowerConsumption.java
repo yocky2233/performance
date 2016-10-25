@@ -3,9 +3,12 @@ package zf.test;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.android.net.AndroidRunable;
 import com.zf.AT.Port;
 import com.zf.AT.SengAT;
 
@@ -47,14 +50,20 @@ public class GetPowerConsumption {
 
 		// 重置数据
 		try {
-			if (!haoDian.isEmpty()) {
+			if (haoDian != null) {
 				System.out.println("清除数据");
 				Runtime.getRuntime().exec("adb shell dumpsys batterystats --reset");
 			}else {
 				
 				//重试次数大于3次就不再重试
 				if(repetition <= 3) {
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 					repetition++;
+					System.out.println("再次取功耗值");
 					getPowerConsumption(Package);
 				}else {
 					repetition = 0;
@@ -89,10 +98,11 @@ public class GetPowerConsumption {
 	}
 
 	public static void main(String[] args) {
-		SengAT test = new SengAT(); //初始化串口类
-		// 连接端口
-		Port port = test.connectCOM("COM8");
 		
+		
+		//开启socket服务监听中断信号
+		SocketStart run = new SocketStart();
+		run.start();
 		
 		
 		GetPowerConsumption t = new GetPowerConsumption();
@@ -101,18 +111,26 @@ public class GetPowerConsumption {
 		
 		//循环几次获取电量
 		for(int i=0; i<5; i++) {
+			//初始化串口类
+			SengAT test = new SengAT(); 
+			// 连接端口
+			Port port = test.connectCOM("COM4");
+			
 			try {
 				//运行uiautomator
 //				Process p = Runtime.getRuntime().exec("");
 				Thread.sleep(500);
 				//程序运行后断开继电器连接
-				String feedback = port.sendAT("AT+OFF");
+				String feedback = port.sendAT("AT+ON");
+				port.close();
 				
 				//循环等待机器的自动化脚本跑完
 				while(getQuantity) {
+					System.out.println("等待中……");
 					Thread.sleep(5000);
 				}
-				Thread.sleep(1000);
+				getQuantity = true;
+				Thread.sleep(5000);
 				//获取应用功耗值
 				t.getPowerConsumption("com.meitu.shanliao");
 				
@@ -125,8 +143,35 @@ public class GetPowerConsumption {
 			
 		}
 		
-		
+		System.out.println("测试结束");
 		
 	}
 
+}
+
+
+
+
+//开启socket服务
+class SocketStart extends Thread {
+
+	public void run() {
+		System.out.println("开启socket服务");
+		ServerSocket serivce = null;
+		try {
+			serivce = new ServerSocket(30000);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		while (true) {
+			// 等待客户端连接
+			Socket socket = null;
+			try {
+				socket = serivce.accept();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			new Thread(new AndroidRunable(socket)).start();
+		}
+	}
 }

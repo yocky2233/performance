@@ -11,13 +11,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import com.zf.AT.Port;
+import com.zf.AT.SengAT;
 
 import zf.test.GetPowerConsumption;  
   
 public class AndroidRunable implements Runnable {  
   
     Socket socket = null;  
-    Port port;
   
     public AndroidRunable(Socket socket) {  
         this.socket = socket;  
@@ -25,6 +25,11 @@ public class AndroidRunable implements Runnable {
   
     @Override  
     public void run() {  
+		// 初始化串口类
+		SengAT test = new SengAT();
+		// 连接端口
+		Port port = test.connectCOM("COM4");
+    	
     	GetPowerConsumption gc = new GetPowerConsumption();
         // 向android客户端输出hello worild  
         String line = null;  
@@ -45,10 +50,12 @@ public class AndroidRunable implements Runnable {
             while ((line = bff.readLine()) != null) {  
                 System.out.print(line);  
                 //获取到apk发来的信息后连接继电器
-                String feedback = port.sendAT("AT+ON");
+                String feedback = port.sendAT("AT+OFF");
                 
                 gc.getQuantity = false;
+                break;
             }  
+            port.close();
             //关闭输入输出流  
             output.close();  
             bff.close();  
