@@ -52,6 +52,7 @@ public class FlowTest {
 		FlowTest T = new FlowTest();
 		
 		String UID = T.getUid("com.meitu.shanliao");
+//		String UID = T.getUid("com.tencent.mm");
 		
 		String sendFlowCmd = "adb shell cat /proc/uid_stat/" + UID + "/tcp_snd";
 		String receiveFlowCmd = "adb shell cat /proc/uid_stat/" + UID + "/tcp_rcv";
