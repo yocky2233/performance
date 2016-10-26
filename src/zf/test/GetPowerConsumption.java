@@ -1,10 +1,14 @@
 package zf.test;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,7 +41,6 @@ public class GetPowerConsumption {
 	public void getPowerConsumption(String Package) {
 		String haoDian = null;
 		
-		
 		String uid = getUid(Package);
 		StringBuffer PowerConsumption = cmd("adb shell dumpsys batterystats " + Package + " | grep  " + uid);
 		Pattern p = Pattern.compile(".+:.*\\d+.\\d+");
@@ -47,10 +50,23 @@ public class GetPowerConsumption {
 			haoDian = gh.split(":")[1].trim();
 			System.out.println(Package + "功耗为：" + haoDian + "mAh");
 		}
-
+		
 		// 重置数据
 		try {
 			if (haoDian != null) {
+				//取到功耗值后保存整份batterystats日志
+				StringBuffer batterystats = cmd("adb shell dumpsys batterystats");
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+				String time = dateFormat.format(new Date());
+				try {
+					FileWriter fw = new FileWriter("./PowerDissipationData/"+ time + Package + "功耗" + haoDian + "mAh");
+					fw.write(batterystats.toString());
+					fw.flush();
+					fw.close(); 
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				//清除数据
 				System.out.println("清除数据");
 				Runtime.getRuntime().exec("adb shell dumpsys batterystats --reset");
 			}else {
@@ -96,54 +112,83 @@ public class GetPowerConsumption {
 		// System.out.println(sb);
 		return sb;
 	}
+	
+	private void autoTest(String pk) {
+		// 各uiautomator执行命令
+		String[] command = { "adb shell uiautomator runtest AutoRunner2.jar --nohup -c com.zf.uiautomatorTest.MemTest#testVideo"
+				, "adb shell uiautomator runtest AutoRunner2.jar --nohup -c com.zf.uiautomatorTest.MemTest#testVideo"
+				,"adb shell uiautomator runtest AutoRunner2.jar --nohup -c com.zf.uiautomatorTest.MemTest#testVideo"
+				,"adb shell uiautomator runtest AutoRunner2.jar --nohup -c com.zf.uiautomatorTest.MemTest#testVideo"};
 
-	public static void main(String[] args) {
-		
-		
-		//开启socket服务监听中断信号
+		// 开启socket服务监听中断信号
 		SocketStart run = new SocketStart();
 		run.start();
-		
-		
+
 		GetPowerConsumption t = new GetPowerConsumption();
-//		t.getPowerConsumption("com.meitu.shanliao");
+		// t.getPowerConsumption("com.meitu.shanliao");
 		// t.getPowerConsumption("com.tencent.mm");
-		
-		//循环几次获取电量
-		for(int i=0; i<5; i++) {
-			//初始化串口类
-			SengAT test = new SengAT(); 
+
+		// 测试前先清除重置数据
+		try {
+			Runtime.getRuntime().exec("adb shell dumpsys batterystats --reset");
+			Runtime.getRuntime().exec("adb shell dumpsys batterystats --enable full-wake-history");
+			System.out.println("……运行前重置batterystats数据……");
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		// 循环几次获取电量
+		for (int i = 0; i < command.length; i++) {
+			// 初始化串口类
+			SengAT test = new SengAT();
 			// 连接端口
-			Port port = test.connectCOM("COM4");
-			
+			Port port = test.connectCOM("COM8");
+
 			try {
-				//运行uiautomator
-//				Process p = Runtime.getRuntime().exec("");
-				Thread.sleep(500);
-				//程序运行后断开继电器连接
+				// 运行uiautomator
+				 Process p = Runtime.getRuntime().exec(command[i]);
+				Thread.sleep(1000);
+				// 程序运行后断开继电器连接
 				String feedback = port.sendAT("AT+ON");
 				port.close();
-				
-				//循环等待机器的自动化脚本跑完
-				while(getQuantity) {
+
+				// 循环等待机器的自动化脚本跑完
+				while (getQuantity) {
 					System.out.println("等待中……");
 					Thread.sleep(5000);
 				}
 				getQuantity = true;
 				Thread.sleep(5000);
-				//获取应用功耗值
-				t.getPowerConsumption("com.meitu.shanliao");
-				
-				
+				// 获取应用功耗值
+				t.getPowerConsumption(pk);
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
+
+		}
+
+		System.out.println("测试结束");
+	}
+	
+	private void onceGet(String pk) {
+		
+		GetPowerConsumption t = new GetPowerConsumption();
+		t.getPowerConsumption(pk);
+	}
+	
+
+	public static void main(String[] args) {
+		File f = new File("./PowerDissipationData");
+		if (!f.exists()) {
+			f.mkdir();
 		}
 		
-		System.out.println("测试结束");
+		GetPowerConsumption t = new GetPowerConsumption();
+//		t.autoTest("com.meitu.shanliao");
+		t.autoTest("com.tencent.mm");
 		
 	}
 

@@ -28,14 +28,14 @@ public class AndroidRunable implements Runnable {
 		// 初始化串口类
 		SengAT test = new SengAT();
 		// 连接端口
-		Port port = test.connectCOM("COM4");
+		Port port = test.connectCOM("COM8");
     	
     	GetPowerConsumption gc = new GetPowerConsumption();
         // 向android客户端输出hello worild  
         String line = null;  
         InputStream input;  
         OutputStream output;  
-        String str = "hello world!";  
+        String str = "Receipt of a request!";  
         try {  
             //向客户端发送信息  
             output = socket.getOutputStream();  
