@@ -115,10 +115,10 @@ public class GetPowerConsumption {
 	
 	private void autoTest(String pk) {
 		// 各uiautomator执行命令
-		String[] command = { "adb shell uiautomator runtest AutoRunner2.jar --nohup -c com.zf.uiautomatorTest.MemTest#testVideo"
-				, "adb shell uiautomator runtest AutoRunner2.jar --nohup -c com.zf.uiautomatorTest.MemTest#testVideo"
-				,"adb shell uiautomator runtest AutoRunner2.jar --nohup -c com.zf.uiautomatorTest.MemTest#testVideo"
-				,"adb shell uiautomator runtest AutoRunner2.jar --nohup -c com.zf.uiautomatorTest.MemTest#testVideo"};
+		String[] command = { "adb shell uiautomator runtest AutoRunner2.jar --nohup -c com.zf.uiautomatorTest.MemTest#sendP"
+				, "adb shell uiautomator runtest AutoRunner2.jar --nohup -c com.zf.uiautomatorTest.MemTest#sendP"
+				,"adb shell uiautomator runtest AutoRunner2.jar --nohup -c com.zf.uiautomatorTest.MemTest#sendP"
+				,"adb shell uiautomator runtest AutoRunner2.jar --nohup -c com.zf.uiautomatorTest.MemTest#sendP"};
 
 		// 开启socket服务监听中断信号
 		SocketStart run = new SocketStart();
@@ -187,8 +187,8 @@ public class GetPowerConsumption {
 		}
 		
 		GetPowerConsumption t = new GetPowerConsumption();
-//		t.autoTest("com.meitu.shanliao");
-		t.autoTest("com.tencent.mm");
+		t.autoTest("com.meitu.shanliao");
+//		t.autoTest("com.tencent.mm");
 		
 	}
 
