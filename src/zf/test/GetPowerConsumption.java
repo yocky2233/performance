@@ -190,6 +190,10 @@ public class GetPowerConsumption {
 		t.autoTest("com.meitu.shanliao");
 //		t.autoTest("com.tencent.mm");
 		
+		
+		SocketStart run = new SocketStart();
+		run.start();
+		
 	}
 
 }
