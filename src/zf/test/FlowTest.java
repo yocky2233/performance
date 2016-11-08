@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
+
 public class FlowTest {
 
 	private String getUid(String packageName) {
@@ -44,6 +45,37 @@ public class FlowTest {
 		}
 //		 System.out.println(sb);
 		return sb;
+	}
+	
+	
+	public String[] getFlowRate(String Package) {
+		String []list = new String[3];
+		
+		String UID = getUid(Package);
+		
+		String sendFlowCmd = "adb shell cat /proc/uid_stat/" + UID + "/tcp_snd";
+		String receiveFlowCmd = "adb shell cat /proc/uid_stat/" + UID + "/tcp_rcv";
+		
+		double getUidReceiveFlow = getFlow(sendFlowCmd);
+		double getUidSendFlow = getFlow(receiveFlowCmd);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		double getUidReceiveFlow2 = getFlow(sendFlowCmd);
+		double getUidSendFlow2 = getFlow(receiveFlowCmd);
+		
+		String UidReceiveFlow = new DecimalFormat("0").format((getUidReceiveFlow2 - getUidReceiveFlow)/1024);
+		String UidSendFlow = new DecimalFormat("0").format((getUidSendFlow2 - getUidSendFlow)/1024);
+		String UidTotal = new DecimalFormat("0").format(((getUidReceiveFlow2 - getUidReceiveFlow)+(getUidSendFlow2 - getUidSendFlow))/1024);
+		
+		list[0] = UidReceiveFlow;
+		list[1] = UidSendFlow;
+		list[2] = UidTotal;
+		
+		return list;
 	}
 	
 	
