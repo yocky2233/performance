@@ -261,11 +261,11 @@ public class FpsTest {
 		}
 		
 		try {
-			String sleep = "500";
+			String sleep = "0";
 			FileWriter fw = new FileWriter("d:/monekyFile");
 			fw.write("type = user");
 			fw.write("\n");
-			fw.write("count = 10");
+			fw.write("count = 1");
 			fw.write("\n");
 			fw.write("speed = 1.0");
 			fw.write("\n");
@@ -273,19 +273,32 @@ public class FpsTest {
 			fw.write("\n");
 			fw.write("UserWait("+sleep+")");
 			fw.write("\n");
-			fw.write("Drag("+startX+","+startY+","+stopX+","+stopY+","+BS+")");
-			fw.write("\n");
-			fw.write("UserWait("+sleep+")");
-			fw.write("\n");
-			fw.write("Drag("+stopX+","+stopY+","+startX+","+startY+","+BS+")");
-			fw.write("\n");
-			fw.write("UserWait("+sleep+")");
-			fw.write("\n");
-			fw.write("Drag("+startX+","+startY+","+stopX+","+stopY+","+BS+")");
-			fw.write("\n");
-			fw.write("UserWait("+sleep+")");
-			fw.write("\n");
-			fw.write("Drag("+stopX+","+stopY+","+startX+","+startY+","+BS+")");
+			for(int i=0; i<10; i++) {
+				fw.write("Drag("+startX+","+startY+","+stopX+","+stopY+","+BS+")");
+				fw.write("\n");
+				fw.write("UserWait("+sleep+")");
+				fw.write("\n");
+				fw.write("Drag("+startX+","+startY+","+stopX+","+stopY+","+BS+")");
+				fw.write("\n");
+				fw.write("UserWait("+sleep+")");
+				fw.write("\n");
+				fw.write("Drag("+stopX+","+stopY+","+startX+","+startY+","+BS+")");
+				fw.write("\n");
+				fw.write("UserWait("+sleep+")");
+				fw.write("\n");
+				fw.write("Drag("+stopX+","+stopY+","+startX+","+startY+","+BS+")");
+				fw.write("\n");
+				fw.write("UserWait("+sleep+")");
+				fw.write("\n");
+			}
+			
+//			fw.write("UserWait("+sleep+")");
+//			fw.write("\n");
+//			fw.write("Drag("+startX+","+startY+","+stopX+","+stopY+","+BS+")");
+//			fw.write("\n");
+//			fw.write("UserWait("+sleep+")");
+//			fw.write("\n");
+//			fw.write("Drag("+stopX+","+stopY+","+startX+","+startY+","+BS+")");
 			fw.flush();
 			fw.close();
 		} catch (IOException e) {
@@ -342,7 +355,7 @@ public class FpsTest {
 			Process p = null;
 			StringBuffer sb = null;
 			
-			String sbPid = cmd("adb  shell ps | grep monkey"," ").toString().trim();
+			String sbPid = cmd("adb shell ps | grep monkey"," ").toString().trim();
 			
 			Pattern p1 = Pattern.compile("[0-9]+");
 			Matcher m = p1.matcher(sbPid);
@@ -381,7 +394,7 @@ public class FpsTest {
 		
 		Process run = null;
 		try {
-			run = Runtime.getRuntime().exec("adb shell monkey -v -f /mnt/sdcard/monekyFile 99999999");
+			run = Runtime.getRuntime().exec("adb shell monkey -f /mnt/sdcard/monekyFile 999999999");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
