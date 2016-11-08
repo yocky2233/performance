@@ -23,7 +23,6 @@ public class FlowTest {
 //		String retain = new DecimalFormat("0.00").format(f);
 //		float FlowF = Float.parseFloat(retain);
 		
-//		System.out.println(FlowF + "KB");
 		return Flow;
 	}
 
